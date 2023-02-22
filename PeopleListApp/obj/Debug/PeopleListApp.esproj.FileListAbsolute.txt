@@ -1,0 +1,2 @@
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleListApp\obj\Debug\PeopleListApp.esproj.SuggestedBindingRedirects.cache
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleListApp\obj\Debug\PeopleListApp.esproj.CoreCompileInputs.cache
