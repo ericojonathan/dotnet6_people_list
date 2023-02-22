@@ -10,6 +10,6 @@ export class PersonItemComponent {
   @Input() person?: Person;
 
   constructor() {
-    console.log(this.person?.FirstName);
+    console.log(this.person);
   }
 }

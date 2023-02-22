@@ -15,9 +15,19 @@ namespace PeopleListAPI.Controllers
     {
         private readonly PeopleContext _context;
 
-        public PeopleController(PeopleContext context)
+        public PeopleController(PeopleContext context, bool testRunning = false)
         {
             _context = context;
+
+            if (!testRunning)
+            {
+                //Fill Initial data for running app
+                _context.People.AddRange(
+                    new Person { FirstName = "Joe", LastName = "Doe" },
+                    new Person { FirstName = "Jane", LastName = "Doe" }
+                );
+                _context.SaveChanges();
+            }            
         }
 
         // GET: api/People

@@ -36,7 +36,7 @@ namespace PeopleList.Tests
             repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserB" });
             repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserC" });
             repo.SaveChanges();
-            var controller = new PeopleController(repo);
+            var controller = new PeopleController(repo, true);
 
             //Act
             var result = await controller.GetPeople();
@@ -90,7 +90,7 @@ namespace PeopleList.Tests
             repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserB" });
             repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserC" });
             await repo.SaveChangesAsync();
-            var controller = new PeopleController(repo);
+            var controller = new PeopleController(repo, true);
 
             //Act
             var people = await controller.GetPeople();
