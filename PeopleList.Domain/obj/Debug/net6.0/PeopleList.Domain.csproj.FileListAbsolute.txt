@@ -1,0 +1,12 @@
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\bin\Debug\net6.0\PeopleList.Domain.deps.json
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\bin\Debug\net6.0\PeopleList.Domain.dll
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\bin\Debug\net6.0\PeopleList.Domain.pdb
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\PeopleList.Domain.csproj.AssemblyReference.cache
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\PeopleList.Domain.GeneratedMSBuildEditorConfig.editorconfig
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\PeopleList.Domain.AssemblyInfoInputs.cache
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\PeopleList.Domain.AssemblyInfo.cs
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\PeopleList.Domain.csproj.CoreCompileInputs.cache
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\PeopleList.Domain.dll
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\refint\PeopleList.Domain.dll
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\PeopleList.Domain.pdb
+G:\job_search\interviews\BeyondSoft\Test\PeopleList\PeopleList\PeopleList.Domain\obj\Debug\net6.0\ref\PeopleList.Domain.dll

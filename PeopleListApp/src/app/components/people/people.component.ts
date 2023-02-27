@@ -12,5 +12,6 @@ export class PeopleComponent {
 
   constructor(private peopleService: PeopleService) {
     this.peopleService.getPeople().subscribe((people) => (this.people = people));
+    console.log(this.people);
   }
 }

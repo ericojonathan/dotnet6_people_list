@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PeopleListAPI.Models;
+using PeopleList.Domain.Interfaces;
+using PeopleList.Domain.Entities;
 
 namespace PeopleListAPI.Controllers
 {
@@ -13,71 +14,47 @@ namespace PeopleListAPI.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private readonly PeopleContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PeopleController(PeopleContext context, bool testRunning = false)
+        public PeopleController(IUnitOfWork unitOfWork)
         {
-            _context = context;
-
-            if (!testRunning)
-            {
-                //Fill Initial data for running app
-                _context.People.AddRange(
-                    new Person { FirstName = "Joe", LastName = "Doe" },
-                    new Person { FirstName = "Jane", LastName = "Doe" }
-                );
-                _context.SaveChanges();
-            }            
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/People
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Person>>> GetPeople()
         {
-            return await _context.People.ToListAsync();
+            return Ok(await _unitOfWork.People.GetAllAsync());
         }
 
         // GET: api/People/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Person>> GetPerson(long id)
-        {
-            var person = await _context.People.FindAsync(id);
+        {            
+            var person = await _unitOfWork.People.FindAsync(p => p.ID == id);
 
             if (person == null)
             {
                 return NotFound();
             }
 
-            return person;
+            return Ok(person);
         }
 
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerson(long id, Person person)
+        public async Task<ActionResult> PutPerson(long id, Person person)
         {
-            if (id != person.Id || person?.FirstName?.Count() < 3)
-            {
-                return BadRequest();
-            }
+            //if (id != person.ID || person?.FirstName?.Count() < 3)
+            //{
+            //    return BadRequest();
+            //}
 
-            _context.Entry(person).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PersonExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            ////_context.Entry(person).State = EntityState.Modified;            
+            //await _unitOfWork.People.UpdatePerson(person);
+            //_unitOfWork.Complete();            
 
             return NoContent();
         }
@@ -91,32 +68,31 @@ namespace PeopleListAPI.Controllers
             {
                 return BadRequest();
             }
+            
+            await _unitOfWork.CompleteAsync();
 
-            _context.People.Add(person);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPerson", new { id = person.Id }, person);
+            return CreatedAtAction("GetPerson", new { id = person?.ID }, person);
         }
 
         // DELETE: api/People/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePerson(long id)
         {
-            var person = await _context.People.FindAsync(id);
+            var person = await _unitOfWork.People.FindAsync((p) => p.ID == id);
             if (person == null)
             {
                 return NotFound();
             }
-
-            _context.People.Remove(person);
-            await _context.SaveChangesAsync();
+            
+            _unitOfWork.People.Remove(person.First());
+            await _unitOfWork.CompleteAsync();
 
             return NoContent();
         }
 
         private bool PersonExists(long id)
         {
-            return _context.People.Any(e => e.Id == id);
+            return _unitOfWork.People.GetAll().Any(p => p.ID == id);
         }
     }
 }

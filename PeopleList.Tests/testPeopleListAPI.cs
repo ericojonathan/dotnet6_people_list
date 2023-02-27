@@ -1,11 +1,13 @@
 ﻿using PeopleListAPI.Controllers;
-using PeopleListAPI.Models;
+using PeopleList.Domain.Entities;
+using PeopleList.EF.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using PeopleList.Domain.Interfaces;
+ 
 namespace PeopleList.Tests
 {
     public class testPeopleListAPI
@@ -16,8 +18,9 @@ namespace PeopleList.Tests
             // Arrange
             var helper = new TestHelper();
             var repo = helper.GetInMemoryPeopleRepository();
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserA" });
-            var controller = new PeopleController(repo);
+            repo.People.Add(new Person { FirstName = "UserA" });
+            IUnitOfWork unitOfWork = new UnitOfWork(repo);
+            var controller = new PeopleController(unitOfWork);
 
             //Act
             var result = await controller.GetPerson(1);
@@ -32,11 +35,12 @@ namespace PeopleList.Tests
             // Arrange
             var helper = new TestHelper();
             var repo = helper.GetInMemoryPeopleRepository();
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserA" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserB" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserC" });
+            repo.People.Add(new Person { FirstName = "UserA" });
+            repo.People.Add(new Person { FirstName = "UserB" });
+            repo.People.Add(new Person { FirstName = "UserC" });
             repo.SaveChanges();
-            var controller = new PeopleController(repo, true);
+            IUnitOfWork unitOfWork = new UnitOfWork(repo);
+            var controller = new PeopleController(unitOfWork);
 
             //Act
             var result = await controller.GetPeople();
@@ -53,8 +57,9 @@ namespace PeopleList.Tests
         {
             // Arrange
             var helper = new TestHelper();
-            var repo = helper.GetInMemoryPeopleRepository();            
-            var controller = new PeopleController(repo);
+            var repo = helper.GetInMemoryPeopleRepository();
+            IUnitOfWork unitOfWork = new UnitOfWork(repo);
+            var controller = new PeopleController(unitOfWork);
 
             // Act
             Person newPerson = new Person { FirstName = "UserA" };
@@ -70,7 +75,8 @@ namespace PeopleList.Tests
             // Arrange
             var helper = new TestHelper();
             var repo = helper.GetInMemoryPeopleRepository();
-            var controller = new PeopleController(repo);
+            IUnitOfWork unitOfWork = new UnitOfWork(repo);
+            var controller = new PeopleController(unitOfWork);
 
             // Act
             Person newPerson = new Person { FirstName = "Us" };
@@ -86,17 +92,18 @@ namespace PeopleList.Tests
             // Arrange
             var helper = new TestHelper();
             var repo = helper.GetInMemoryPeopleRepository();
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserA" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserB" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserC" });
+            repo.People.Add(new Person { FirstName = "UserA" });
+            repo.People.Add(new Person { FirstName = "UserB" });
+            repo.People.Add(new Person { FirstName = "UserC" });
             await repo.SaveChangesAsync();
-            var controller = new PeopleController(repo, true);
+            IUnitOfWork unitOfWork = new UnitOfWork(repo);
+            var controller = new PeopleController(unitOfWork);
 
             //Act
             var people = await controller.GetPeople();
             Person? putPerson = people?.Value?.Where(p => p.FirstName == "UserB").FirstOrDefault();
             putPerson.FirstName = "UserD";
-            await controller.PutPerson(putPerson.Id, putPerson);
+            await controller.PutPerson(putPerson.ID, putPerson);
 
             //Assert
             Assert.True(repo.People.Any(p => p.FirstName == "UserD"));
@@ -108,17 +115,18 @@ namespace PeopleList.Tests
             // Arrange
             var helper = new TestHelper();
             var repo = helper.GetInMemoryPeopleRepository();
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserA" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserB" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserC" });
+            repo.People.Add(new Person { FirstName = "UserA" });
+            repo.People.Add(new Person { FirstName = "UserB" });
+            repo.People.Add(new Person { FirstName = "UserC" });
             await repo.SaveChangesAsync();
-            var controller = new PeopleController(repo);
+            IUnitOfWork unitOfWork = new UnitOfWork(repo);
+            var controller = new PeopleController(unitOfWork);
 
             //Act
             var people = await controller.GetPeople();
             Person? putPerson = people?.Value?.Where(p => p.FirstName == "UserB").FirstOrDefault();
             putPerson.FirstName = "Us";
-            await controller.PutPerson(putPerson.Id, putPerson);
+            await controller.PutPerson(putPerson.ID, putPerson);
 
             //Assert
             Assert.True(!repo.People.Any(p => p.FirstName == "Us"));
@@ -130,16 +138,17 @@ namespace PeopleList.Tests
             // Arrange
             var helper = new TestHelper();
             var repo = helper.GetInMemoryPeopleRepository();
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserA" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserB" });
-            repo.People.Add(new PeopleListAPI.Models.Person { FirstName = "UserC" });
+            repo.People.Add(new Person { FirstName = "UserA" });
+            repo.People.Add(new Person { FirstName = "UserB" });
+            repo.People.Add(new Person { FirstName = "UserC" });
             await repo.SaveChangesAsync();
-            var controller = new PeopleController(repo);
+            IUnitOfWork unitOfWork = new UnitOfWork(repo);
+            var controller = new PeopleController(unitOfWork);
 
             //Act            
             var people = await controller.GetPeople();
             Person? deletePerson = people?.Value?.Where(p => p.FirstName == "UserB").FirstOrDefault();
-            await controller.DeletePerson(deletePerson.Id);
+            await controller.DeletePerson(deletePerson.ID);
 
             //Assert
             Assert.True(!repo.People.Any(p => p.FirstName == "UserB"));

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using PeopleListAPI.Models;
+using PeopleList.Domain.Entities;
+using PeopleList.EF.UnitOfWork;
 using System.Diagnostics;
 
 namespace PeopleList.Tests
@@ -11,11 +12,11 @@ namespace PeopleList.Tests
         {
             var helper = new TestHelper();
             var repo = helper.GetInMemoryPeopleRepository();
-            
-            repo.People.Add(new Person { FirstName = "UserA" });
+
+            repo.People.Add(new Person { FirstName = "UserA" });            
             repo.SaveChanges();
 
-            Person? savedPerson = repo.People.SingleOrDefault();
+            var savedPerson = repo.People.SingleOrDefault();
 
             Assert.Equal("UserA", savedPerson?.FirstName);
         }
